@@ -67,7 +67,7 @@ public class ApiUsersTest extends BaseTest {
                 .then()
                 .log().all()
                 .statusCode(201)
-                .body("name",is("Max"))
+                .body("name", is("Max"))
                 .body("job", is("QA"));
     }
 
