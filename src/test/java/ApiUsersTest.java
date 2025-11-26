@@ -1,3 +1,4 @@
+import constants.Endpoints;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
@@ -21,7 +22,7 @@ public class ApiUsersTest extends BaseTest {
                 .spec(spec)
                 .queryParam("page", 2)
                 .when()
-                .get("api/users")
+                .get(Endpoints.USERS)
                 .then()
                 .log().all()
                 .statusCode(200);
@@ -33,7 +34,7 @@ public class ApiUsersTest extends BaseTest {
                 .spec(spec)
                 .pathParam("id", 2)
                 .when()
-                .get("api/users/{id}")
+                .get(Endpoints.USERS_ID)
                 .then()
                 .log().all()
                 .statusCode(200)
@@ -46,7 +47,7 @@ public class ApiUsersTest extends BaseTest {
                 .spec(spec)
                 .pathParam("id", 123)
                 .when()
-                .get("api/users/{id}")
+                .get(Endpoints.USERS_ID)
                 .then()
                 .log().all()
                 .statusCode(404);
@@ -63,7 +64,7 @@ public class ApiUsersTest extends BaseTest {
                         }
                         """)
                 .when()
-                .post("api/users")
+                .post(Endpoints.USERS)
                 .then()
                 .log().all()
                 .statusCode(201)
@@ -77,7 +78,7 @@ public class ApiUsersTest extends BaseTest {
                 .spec(spec)
                 .body("")
                 .when()
-                .post("api/user")
+                .post(Endpoints.USER)
                 .then()
                 .log().all()
                 .statusCode(400)
