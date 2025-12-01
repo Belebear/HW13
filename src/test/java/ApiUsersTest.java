@@ -6,12 +6,13 @@ import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
 
 public class ApiUsersTest extends BaseTest {
 
     private final RequestSpecification spec = new RequestSpecBuilder()
-            .addHeader("x-api-key", "reqres-free-v1")
+            .addHeader("x-api-key", "reqres_e4df7de57a7a4594a8450938db327721")
             .log(LogDetail.ALL)
             .setContentType(ContentType.JSON)
             .build();
@@ -25,7 +26,8 @@ public class ApiUsersTest extends BaseTest {
                 .get(Endpoints.USERS)
                 .then()
                 .log().all()
-                .statusCode(200);
+                .statusCode(200)
+                .body("data.id", hasItems(7, 8, 9, 10, 11, 12));
     }
 
     @Test
