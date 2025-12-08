@@ -6,6 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import specs.RequestSpecs;
+import specs.ResponseSpec;
 
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
@@ -26,8 +27,7 @@ public class ApiUsersTest extends BaseTest {
                 .when()
                 .get(Endpoints.USERS)
                 .then()
-                .log().all()
-                .statusCode(200)
+                .spec(ResponseSpec.baseResponse(200))
                 .body("data.id", hasItems(7, 8, 9, 10, 11, 12)));
     }
 
@@ -40,8 +40,7 @@ public class ApiUsersTest extends BaseTest {
                 .when()
                 .get(Endpoints.USERS_ID)
                 .then()
-                .log().all()
-                .statusCode(200)
+                .spec(ResponseSpec.baseResponse(200))
                 .body("data.id", is(2)));
     }
 
@@ -54,8 +53,7 @@ public class ApiUsersTest extends BaseTest {
                 .when()
                 .get(Endpoints.USERS_ID)
                 .then()
-                .log().all()
-                .statusCode(404));
+                .spec(ResponseSpec.baseResponse(404)));
     }
 
     @DisplayName("Создание пользователя")
@@ -71,8 +69,7 @@ public class ApiUsersTest extends BaseTest {
                 .when()
                 .post(Endpoints.USERS)
                 .then()
-                .log().all()
-                .statusCode(201)
+                .spec(ResponseSpec.baseResponse(201))
                 .extract().body().as(SingleUserResponseBodyModel.class));
         step("Проверка отвера", () -> {
             assertEquals(response.getName(), "Max");
@@ -89,8 +86,7 @@ public class ApiUsersTest extends BaseTest {
                 .when()
                 .post(Endpoints.USER)
                 .then()
-                .log().all()
-                .statusCode(400)
+                .spec(ResponseSpec.baseResponse(400))
                 .extract().body().as(ErrorResponseBodyModel.class));
         step("Проверка содержания ответа", () -> {
             assertEquals(response.getError(), "Empty request body");
