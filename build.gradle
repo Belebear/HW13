@@ -1,5 +1,7 @@
 plugins {
     id 'java'
+    id "io.freefair.lombok" version "9.1.0"
+    id 'io.qameta.allure' version '2.11.2'
 }
 
 group = 'ru.mail.barkalov'
@@ -9,13 +11,35 @@ repositories {
     mavenCentral()
 }
 
+allure {
+    report{ // секция репорта
+        version.set("2.24.0")
+    }
+    adapter { // отвечает за появление папочки build/allure-results
+        aspectjWeaver.set(true) //обработка аннотации @Step
+        frameworks {
+            junit5 { // название фреймворка
+                adapterVersion.set("2.24.0") //версия интеграции фреймворка и Allure
+            }
+        }
+    }
+}
+
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     testImplementation 'io.rest-assured:rest-assured:5.5.6'
+    testImplementation 'io.rest-assured:json-schema-validator:5.5.6'
+    testImplementation 'io.qameta.allure:allure-rest-assured:2.24.0'
 }
 
 test {
     useJUnitPlatform()
+}
+
+tasks.register('api_test', Test) {
+    useJUnitPlatform {
+        includeTags("api_test")
+    }
 }
